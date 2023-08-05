@@ -142,10 +142,22 @@ def get_pty_slave(pid: int):
     Raises:
         FileNotFoundError: if there is no process with the given pid
     """
+    # For debugging
+    log_file = open('/tmp/ueberzu.log', 'wa')
+    def log(obj):
+        print(repr(obj), file=log_file)
+
     pty_slave_folders = get_pty_slave_folders()
+    log('pty_slave_folders:')
+    log(pty_slave_folders)
     process_info = get_info(pid)
+    log('process_info:')
+    log(process_info)
     tty_nr = int(process_info['tty_nr'])
     minor_device_number = calculate_minor_device_number(tty_nr)
+    log('minor_device_number:')
+    log(minor_device_number)
+    log('')
 
     for folder in pty_slave_folders:
         device_path = f'{folder}/{minor_device_number}'
